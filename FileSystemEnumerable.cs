@@ -8,6 +8,11 @@
 // 26 Jan 2019 (Brian Hart): Added two overloads of a static Search() method so that you do not have to call
 // the constructor directly.  Helpful for cleaner syntax in loops.
 //
+
+/// <summary>
+/// Enumerates the files and folders in the specified directory, yielding results as they come, and 
+/// skipping files and folders to which the operating system denies us access.
+/// </summary>
 public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 {
 	private ILog _logger = LogManager.GetLogger(typeof(FileSystemEnumerable));
