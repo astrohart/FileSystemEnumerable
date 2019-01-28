@@ -16,7 +16,8 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 	private readonly IList<string> _patterns;
 	private readonly SearchOption _option;
 
-	public static IEnumerable<FileSystemInfo> Search(DirectoryInfo root, string pattern = "*", SearchOption option = SearchOption.AllDirectories)
+	public static IEnumerable<FileSystemInfo> Search(DirectoryInfo root, string pattern = "*", 
+        SearchOption option = SearchOption.AllDirectories)
 	{
 		if (!root.Exists)
 			throw new DirectoryNotFoundException($"The folder '{root.FullName}' could not be located.");
@@ -27,7 +28,8 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 		return new FileSystemEnumerable(root, pattern, option); 
 	}
 
-	public static IEnumerable<FileSystemInfo> Search(string root, string pattern = "*", SearchOption option = SearchOption.AllDirectories)
+	public static IEnumerable<FileSystemInfo> Search(string root, string pattern = "*", 
+        SearchOption option = SearchOption.AllDirectories)
 	{
 		if (!Directory.Exists(root))
 			throw new DirectoryNotFoundException($"The folder '{root}' could not be located.");
