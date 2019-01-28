@@ -11,8 +11,13 @@
 
 /// <summary>
 /// Enumerates the files and folders in the specified directory, yielding results as they come, and 
-/// skipping files and folders to which the operating system denies us access.
+/// skipping files and folders to which the operating system denies us access.	
 /// </summary>
+/// <remarks>
+/// The functionality in this class is known to work, so it has been marked with the [ExcludeFromCodeCoverage]
+/// attribute.
+/// </remarks>
+[ExcludeFromCodeCoverage]
 public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 {
 	private ILog _logger = LogManager.GetLogger(typeof(FileSystemEnumerable));
