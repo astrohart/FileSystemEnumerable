@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 // This code is public domain - from the StackOverflow post at
 // <https://stackoverflow.com/questions/13130052/directoryinfo-enumeratefiles-causes-unauthorizedaccessexception-and-other>
 // Provided by Matthew Brubaker.  I do not own this code in any way; I am merely putting this here to facilitate
