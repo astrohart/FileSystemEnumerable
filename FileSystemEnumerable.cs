@@ -1,4 +1,9 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 
 // This code is public domain - from the StackOverflow post at
 // <https://stackoverflow.com/questions/13130052/directoryinfo-enumeratefiles-causes-unauthorizedaccessexception-and-other>
@@ -22,7 +27,7 @@ using System.Diagnostics.CodeAnalysis;
 [ExcludeFromCodeCoverage]
 public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 {
-	private ILog _logger = LogManager.GetLogger(typeof(FileSystemEnumerable));
+	//private ILog _logger = LogManager.GetLogger(typeof(FileSystemEnumerable));
 
 	private readonly DirectoryInfo _root;
 	private readonly IList<string> _patterns;
@@ -72,54 +77,50 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 
 		IEnumerable<FileSystemInfo> matches = new List<FileSystemInfo>();
 		try
-		{
-			_logger.DebugFormat("Attempting to enumerate '{0}'", _root.FullName);
-			foreach (var pattern in _patterns)
-			{
-				_logger.DebugFormat("Using pattern '{0}'", pattern);
-				matches = matches.Concat(_root.EnumerateDirectories(pattern, SearchOption.TopDirectoryOnly))
-								 .Concat(_root.EnumerateFiles(pattern, SearchOption.TopDirectoryOnly));
-			}
-		}
+        {
+            //_logger.DebugFormat("Attempting to enumerate '{0}'", _root.FullName);
+            matches = _patterns.Aggregate(matches, (current, pattern) => current.Concat(_root.EnumerateDirectories(pattern, SearchOption.TopDirectoryOnly))
+                .Concat(_root.EnumerateFiles(pattern, SearchOption.TopDirectoryOnly)));
+        }
 		catch (UnauthorizedAccessException)
 		{
-			_logger.WarnFormat("Unable to access '{0}'. Skipping...", _root.FullName);
+			//_logger.WarnFormat("Unable to access '{0}'. Skipping...", _root.FullName);
 			yield break;
 		}
-		catch (PathTooLongException ptle)
+		catch (PathTooLongException)
 		{
-			_logger.Warn(string.Format(@"Could not process path '{0}\{1}'.", _root.Parent.FullName, _root.Name), ptle);
+			//_logger.Warn(string.Format(@"Could not process path '{0}\{1}'.", _root.Parent.FullName, _root.Name), ptle);
 			yield break;
 		}
-		catch (System.IO.IOException e)
+		catch (System.IO.IOException)
 		{
 			// "The symbolic link cannot be followed because its type is disabled."
 			// "The specified network name is no longer available."
-			_logger.Warn(string.Format(@"Could not process path (check SymlinkEvaluation rules)'{0}\{1}'.", _root.Parent.FullName, _root.Name), e);
+			//_logger.Warn(string.Format(@"Could not process path (check SymlinkEvaluation rules)'{0}\{1}'.", _root.Parent.FullName, _root.Name), e);
 			yield break;
 		}
 
 
-		_logger.DebugFormat("Returning all objects that match the pattern(s) '{0}'", string.Join(",", _patterns));
+		//_logger.DebugFormat("Returning all objects that match the pattern(s) '{0}'", string.Join(",", _patterns));
 		foreach (var file in matches)
 		{
 			yield return file;
 		}
 
-		if (_option == SearchOption.AllDirectories)
-		{
-			_logger.DebugFormat("Enumerating all child directories.");
-			foreach (var dir in _root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
-			{
-				_logger.DebugFormat("Enumerating '{0}'", dir.FullName);
-				var fileSystemInfos = new FileSystemEnumerable(dir, _patterns, _option);
-				foreach (var match in fileSystemInfos)
-				{
-					yield return match;
-				}
-			}
-		}
-	}
+        if (_option != SearchOption.AllDirectories) 
+            yield break;
+
+        //_logger.DebugFormat("Enumerating all child directories.");
+        foreach (var dir in _root.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
+        {
+            //_logger.DebugFormat("Enumerating '{0}'", dir.FullName);
+            var fileSystemInfos = new FileSystemEnumerable(dir, _patterns, _option);
+            foreach (var match in fileSystemInfos)
+            {
+                yield return match;
+            }
+        }
+    }
 
 	IEnumerator IEnumerable.GetEnumerator()
 	{
