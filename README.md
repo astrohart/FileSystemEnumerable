@@ -10,6 +10,7 @@ This is to work around the rather annoying behavior of, e.g., ```Directory.Enume
 29 Jan 2019    Brian Hart
 * Ran a code cleanup (format, remove and sort usings) on the ```FileSystemEnumerable.cs``` file.
 * Commented out all calls to ```ILog``` so that this code does not have ```log4net``` as a dependency.
+
 26 Jan 2019    Brian Hart    
 * Added two overloads of a static ```Search``` method so that you can use it in a ```foreach``` in a more fluent way.  
 * Test for the non-existence of the root directory and also I set defaults for the pattern and option parameters.
