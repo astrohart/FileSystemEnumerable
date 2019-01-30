@@ -14,6 +14,9 @@ using System.Linq;
 //
 // 26 Jan 2019 (Brian Hart): Added two overloads of a static Search() method so that you do not have to call
 // the constructor directly.  Helpful for cleaner syntax in loops.
+// 29 Jan 2019 (Brian Hart) Did a CodeMaid code cleanup on the file (formatted and sorted usings) and commented out
+// all the calls to ILog, to remove the dependency on log4net, which might not be something that everyone who wants to 
+// utilize this class might also utilize.
 //
 
 /// <summary>
