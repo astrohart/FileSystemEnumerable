@@ -34,3 +34,13 @@ foreach (var fileSystemInfo in FileSystemEnumerable.Search(new DirectoryInfo(@"C
 }
 ```
 This is using the new, static ```Search``` method.
+
+## Questions, comments, issues?
+
+If you are using this class and find bugs, issues, or want to share something you've learned, please, make a post in the Issues section above.
+
+Perhaps you might also want to fork this project and make what you think are improvements.  Submit a pull request and then I will review it -- if I have time, of course!
+
+Enjoy!  I found this class very useful, and very well-tested.  I hope you enjoy this post!
+
+--Brian Hart
