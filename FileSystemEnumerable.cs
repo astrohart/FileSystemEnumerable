@@ -41,8 +41,9 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 	{
 		if (!root.Exists)
 			throw new DirectoryNotFoundException($"The folder '{root.FullName}' could not be located.");
-			
-		if (string.IsNullOrWhiteSpace(pattern))
+
+        /* If the search pattern string is blank, then default to the wildcard (*) pattern. */
+        if (string.IsNullOrWhiteSpace(pattern))
 			pattern = "*";
 			
 		return new FileSystemEnumerable(root, pattern, option); 
