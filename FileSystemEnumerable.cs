@@ -39,14 +39,14 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 	public static IEnumerable<FileSystemInfo> Search(DirectoryInfo root, string pattern = "*", 
         SearchOption option = SearchOption.AllDirectories)
 	{
-		if (!root.Exists)
+        if (!root.Exists)
 			throw new DirectoryNotFoundException($"The folder '{root.FullName}' could not be located.");
 
         /* If the search pattern string is blank, then default to the wildcard (*) pattern. */
         if (string.IsNullOrWhiteSpace(pattern))
 			pattern = "*";
-			
-		return new FileSystemEnumerable(root, pattern, option); 
+
+        return new FileSystemEnumerable(root, pattern, option); 
 	}
 
 	public static IEnumerable<FileSystemInfo> Search(string root, string pattern = "*", 
@@ -59,7 +59,8 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 		if (string.IsNullOrWhiteSpace(pattern))
 			pattern = "*";
 
-		return new FileSystemEnumerable(new DirectoryInfo(root), pattern, option);
+        var rootDirectoryInfo = new DirectoryInfo(root);
+        return new FileSystemEnumerable(rootDirectoryInfo, pattern, option);
 	}
 
 	public FileSystemEnumerable(DirectoryInfo root, string pattern, SearchOption option)
