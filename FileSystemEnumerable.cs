@@ -55,6 +55,7 @@ public class FileSystemEnumerable : IEnumerable<FileSystemInfo>
 		if (!Directory.Exists(root))
 			throw new DirectoryNotFoundException($"The folder '{root}' could not be located.");
 
+        /* If the search pattern string is blank, then default to the wildcard (*) pattern. */
 		if (string.IsNullOrWhiteSpace(pattern))
 			pattern = "*";
 
